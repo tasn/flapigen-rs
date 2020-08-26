@@ -442,22 +442,22 @@ May be you need to use `private constructor = empty;` syntax?",
         writeln!(
             file,
             r#"
-    public synchronized void delete() {{
+    private synchronized void _delete() {{
         if ({rust_self_name} != 0) {{
-            do_delete({rust_self_name});
+            do__delete({rust_self_name});
             {rust_self_name} = 0;
        }}
     }}
     @Override
     protected void finalize() throws Throwable {{
         try {{
-            delete();
+            _delete();
         }}
         finally {{
              super.finalize();
         }}
     }}
-    private static native void do_delete(long me);
+    private static native void do__delete(long me);
     /*package*/ {class_name}({internal_ptr_marker} marker, long ptr) {{
         assert marker == {internal_ptr_marker}.RAW_PTR;
         this.{rust_self_name} = ptr;
@@ -707,7 +707,7 @@ May be you need to use `private constructor = empty;` syntax?",
             ctx,
             &class.name.to_string(),
             (class.src_id, class.span()),
-            "do_delete",
+            "do__delete",
             MethodVariant::StaticMethod,
             &JniForeignMethodSignature {
                 output: ForeignTypeInfo {
