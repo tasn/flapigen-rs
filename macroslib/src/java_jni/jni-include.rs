@@ -1154,6 +1154,7 @@ impl<'a> SwigInto<String> for &'a str {
     }
 }
 
+/*
 #[allow(dead_code)]
 fn to_java_util_optional_double(
     env: *mut JNIEnv,
@@ -1203,7 +1204,7 @@ fn to_java_util_optional_double(
             ret
         }
     }
-}
+}*/
 
 #[allow(dead_code)]
 fn from_java_lang_double_to_rust(env: *mut JNIEnv, x: internal_aliases::JDouble) -> Option<f64> {
@@ -1243,14 +1244,14 @@ foreign_typemap!(
     (f_type, option = "NoNullAnnotations") <= "Double";
     (f_type, option = "NullAnnotations") <= "@Nullable Double";
 );
-
+/*
 foreign_typemap!(
     ($p:r_type) Option<f64> => internal_aliases::JOptionalDouble {
         $out = to_java_util_optional_double(env, $p);
     };
     (f_type, option = "NoNullAnnotations") => "java.util.OptionalDouble";
     (f_type, option = "NullAnnotations") => "@NonNull java.util.OptionalDouble";
-);
+);*/
 
 #[allow(dead_code)]
 fn from_java_lang_float_to_rust(env: *mut JNIEnv, x: internal_aliases::JFloat) -> Option<f32> {
@@ -1292,12 +1293,13 @@ foreign_typemap!(
     (f_type, option = "NullAnnotations") <= "@Nullable Float";
 );
 
+/*
 foreign_typemap!(
     ($p:r_type) Option<f32> => internal_aliases::JOptionalDouble {
         $out = to_java_util_optional_double(env, $p.map(f64::from));
     };
-);
-
+);*/
+/*
 #[allow(dead_code)]
 fn to_java_util_optional_long(env: *mut JNIEnv, x: Option<i64>) -> internal_aliases::JOptionalLong {
     let class: jclass = swig_jni_find_class!(JAVA_UTIL_OPTIONAL_LONG, "java/util/OptionalLong");
@@ -1343,7 +1345,7 @@ fn to_java_util_optional_long(env: *mut JNIEnv, x: Option<i64>) -> internal_alia
             ret
         }
     }
-}
+}*/
 
 #[allow(dead_code)]
 fn from_java_lang_long_to_rust(env: *mut JNIEnv, x: internal_aliases::JLong) -> Option<i64> {
@@ -1385,13 +1387,14 @@ foreign_typemap!(
     (f_type, option = "NullAnnotations") <= "@Nullable Long";
 );
 
+/*
 foreign_typemap!(
     ($p:r_type) Option<i64> => internal_aliases::JOptionalLong {
         $out = to_java_util_optional_long(env, $p);
     };
     (f_type, option = "NoNullAnnotations") => "java.util.OptionalLong";
     (f_type, option = "NullAnnotations") => "@NonNull java.util.OptionalLong";
-);
+);*/
 
 #[allow(dead_code)]
 fn from_java_lang_int_to_rust(env: *mut JNIEnv, x: internal_aliases::JInteger) -> Option<i32> {
@@ -1497,6 +1500,7 @@ foreign_typemap!(
     (f_type, option = "NullAnnotations") <= "@Nullable Integer";
 );
 
+/*
 #[allow(dead_code)]
 fn to_java_util_optional_int(env: *mut JNIEnv, x: Option<i32>) -> jobject {
     let class: jclass = swig_jni_find_class!(JAVA_UTIL_OPTIONAL_INT, "java/util/OptionalInt");
@@ -1542,15 +1546,16 @@ fn to_java_util_optional_int(env: *mut JNIEnv, x: Option<i32>) -> jobject {
             ret
         }
     }
-}
+}*/
 
+/*
 foreign_typemap!(
     ($p:r_type) Option<i32> => internal_aliases::JOptionalInt {
         $out = to_java_util_optional_int(env, $p);
     };
     (f_type, option = "NoNullAnnotations") => "java.util.OptionalInt";
     (f_type, option = "NullAnnotations") => "@NonNull java.util.OptionalInt";
-);
+);*/
 
 foreign_typemap!(
     ($p:r_type) Option<i8> <= internal_aliases::JByte {
@@ -1560,11 +1565,12 @@ foreign_typemap!(
     (f_type, option = "NullAnnotations") <= "@Nullable Byte";
 );
 
+/*
 foreign_typemap!(
     ($p:r_type) Option<i8> => internal_aliases::JOptionalInt {
         $out = to_java_util_optional_int(env, $p.map(i32::from));
     };
-);
+);*/
 
 foreign_typemap!(
     ($p:r_type) Option<i16> <= internal_aliases::JShort {
@@ -1574,11 +1580,12 @@ foreign_typemap!(
     (f_type, option = "NullAnnotations") <= "@Nullable Short";
 );
 
+/*
 foreign_typemap!(
     ($p:r_type) Option<i16> => internal_aliases::JOptionalInt {
         $out = to_java_util_optional_int(env, $p.map(i32::from));
     };
-);
+);*/
 
 foreign_typemap!(
     ($p:r_type) <T: SwigForeignClass> Option<T> => jlong {
@@ -1659,6 +1666,7 @@ foreign_typemap!(
 "#;
 );
 
+/*
 foreign_typemap!(
     ($p:r_type) Option<String> => internal_aliases::JStringOptStr {
         $out = match $p {
@@ -1672,7 +1680,7 @@ foreign_typemap!(
     ($p:f_type, option = "NullAnnotations") => "@NonNull java.util.Optional<String>" r#"
         $out = java.util.Optional.ofNullable($p);
 "#;
-);
+);*/
 
 foreign_typemap!(
     (r_type) internal_aliases::JStringOptStr;
@@ -1692,6 +1700,7 @@ foreign_typemap!(
     };
 );
 
+/*
 foreign_typemap!(
     ($p:r_type) <T: SwigForeignCLikeEnum> Option<T> => jint {
         $out = match $p {
@@ -1715,7 +1724,7 @@ foreign_typemap!(
             $out = java.util.Optional.empty();
         }
 "#;
-);
+);*/
 
 foreign_typemap!(
     ($p:r_type) <T: SwigForeignCLikeEnum> Option<T> <= jint {
