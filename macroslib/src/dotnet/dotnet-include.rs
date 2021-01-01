@@ -186,6 +186,54 @@ foreign_typemap!(
 );
 
 
+#[allow(non_snake_case)]
+#[no_mangle]
+unsafe extern "C" fn vec_u8_from_size(size: u32) -> *mut Vec<u8> {
+    let vec = vec![0; size as usize];
+    return Box::into_raw(Box::new(vec));
+}
+
+#[allow(non_snake_case)]
+#[no_mangle]
+unsafe extern "C" fn vec_u8_size(vec: &mut Vec<u8>) -> i32 {
+    return vec.len() as i32;
+}
+
+#[allow(non_snake_case)]
+#[no_mangle]
+unsafe extern "C" fn vec_u8_buf(vec: &mut Vec<u8>) -> *const u8 {
+    let ret = vec.as_ptr();
+    return ret;
+}
+
+foreign_typemap!(
+    (r_type) *mut Vec<u8>;
+    (f_type) "/* RustByteArray */ IntPtr";
+);
+
+
+foreign_typemap!(
+    ($p:r_type) Vec<u8> => *mut Vec<u8> {
+        $out = unsafe { Box::into_raw(Box::new($p)) };
+    };
+    ($p:f_type) => "byte[]" "RustByteArray.rust_to_dotnet($p)";
+    ($p:r_type) Vec<u8> <= *mut Vec<u8> {
+        $out = unsafe { *Box::from_raw($p) };
+    };
+    ($p:f_type) <= "byte[]" "RustByteArray.dotnet_to_rust($p)";
+);
+
+
+foreign_typemap!(
+    ($p:r_type) &[u8] => Vec<u8> {
+        $out = $p.to_vec();
+    };
+    ($p:r_type) &[u8] <= Vec<u8> {
+        $out = &$p;
+    };
+);
+
+
 impl SwigDeref for String {
     type Target = str;
     fn swig_deref(&self) -> &str {

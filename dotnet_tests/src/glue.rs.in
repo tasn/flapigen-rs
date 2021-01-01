@@ -60,6 +60,14 @@ impl TestClass {
     pub fn get_ref(&self) -> &i32 {
         &self.i
     }
+
+    pub fn get_vec(&self, buf: Vec<u8>) -> Vec<u8> {
+        return buf;
+    }
+
+    pub fn get_slice(&self, buf: &[u8]) -> bool {
+        return true;
+    }
 }
 
 #[derive(Clone)]
@@ -119,6 +127,8 @@ foreigner_class!(
         fn TestClass::get(&self) -> i32;
         fn TestClass::clone(&self) -> TestClass;
         fn TestClass::eq(&self, other: &TestClass) -> bool;
+        fn TestClass::get_vec(&self, buf: Vec<u8>) -> Vec<u8>;
+        fn TestClass::get_slice(&self, buf: &[u8]) -> bool;
     }
 );
 
