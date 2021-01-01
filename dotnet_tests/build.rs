@@ -1,4 +1,4 @@
-use std::{env, path::Path, time::Instant};
+use std::{env, path::Path, path::PathBuf, time::Instant};
 
 use rust_swig::{DotNetConfig, LanguageConfig};
 
@@ -23,7 +23,8 @@ fn main() {
 
 fn rust_swig_expand(from: &Path, out: &Path) {
     println!("Run rust_swig_expand");
-    let config = DotNetConfig::new("rust_swig_test_dotnet".to_owned());
+    let lib_path = PathBuf::from("target/dotnet/");
+    let config = DotNetConfig::new("rust_swig_test_dotnet".to_owned(), lib_path);
     let swig_gen = rust_swig::Generator::new(LanguageConfig::DotNetConfig(config));
     swig_gen.expand("rust_swig_test_dotnet_native", from, out);
 }
