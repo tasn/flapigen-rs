@@ -140,6 +140,34 @@ namespace {managed_lib_name}
         }}
     }}
 
+    internal static class RustByteArray {{
+        [DllImport("{native_lib_name}", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern /* *mut Vec<u8> */ IntPtr vec_u8_from_size(int size);
+
+        [DllImport("{native_lib_name}", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern /* *c_void */ IntPtr vec_u8_buf(/* *mut Vec<u8> */ IntPtr c_barray_ptr);
+
+        [DllImport("{native_lib_name}", CallingConvention = CallingConvention.Cdecl)]
+        internal static extern /* uint */ int vec_u8_size(/* *const Vec<u8> */ IntPtr byte_array);
+
+        internal static byte[] rust_to_dotnet(/* *mut Vec<u8> */ IntPtr c_barray_ptr)
+        {{
+            var size = RustByteArray.vec_u8_size(c_barray_ptr);
+            var arr = new byte[size];
+            Marshal.Copy(RustByteArray.vec_u8_buf(c_barray_ptr), arr, 0, size);
+            return arr;
+        }}
+
+        internal static /* *mut Vec<u8> */ IntPtr dotnet_to_rust(byte[] dotnet_barray)
+        {{
+            var len = dotnet_barray.Length;
+            var vec_u8 = RustByteArray.vec_u8_from_size(len);
+            var vec_u8_buf = RustByteArray.vec_u8_buf(vec_u8);
+            Marshal.Copy(dotnet_barray, 0, vec_u8_buf, len);
+            return vec_u8;
+        }}
+    }}
+
     [System.Serializable]
     public class Error : System.Exception
     {{
