@@ -189,7 +189,7 @@ foreign_typemap!(
 #[allow(non_snake_case)]
 #[no_mangle]
 unsafe extern "C" fn vec_u8_from_size(size: u32) -> *mut Vec<u8> {
-    let vec = Vec::with_capacity(size as usize);
+    let vec = vec![0; size as usize];
     return Box::into_raw(Box::new(vec));
 }
 
